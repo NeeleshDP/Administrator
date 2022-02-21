@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: administratorapp-deployment
+  labels:
+    app: administratorapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: administratorapp
+  template:
+    metadata:
+      labels:
+        app: administratorapp
+    spec:
+      containers:
+      - name: administratorserver
+        image: 958755137401.dkr.ecr.us-east-2.amazonaws.com/markretailecr:latest
+        ports:
+        - containerPort: 3000
+        
+        
+        ---
+        
+        apiVersion: v1
+kind: Service
+metadata:
+  name: administratorapp-service
+  
+spec:
+   selector:
+     app: administratorapp
+   type: LoadBalancer
+   ports:
+   - protocol: TCP
+     port: 5000
+     targetPort: 3000
+     nodePort: 31110
